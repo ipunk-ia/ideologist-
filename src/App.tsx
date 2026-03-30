@@ -4,11 +4,10 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { LazyMotion, domAnimation, m, AnimatePresence } from 'motion/react';
 import { 
   Coffee, 
   MapPin, 
-  Clock, 
   Instagram, 
   Menu as MenuIcon, 
   X, 
@@ -57,7 +56,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Toggle */}
-        <button className="md:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+        <button aria-label="Toggle menu" className="md:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
           {isMobileMenuOpen ? <X /> : <MenuIcon />}
         </button>
       </div>
@@ -65,7 +64,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div 
+          <m.div 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -88,7 +87,7 @@ const Navbar = () => {
             >
               Book a Table
             </a>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </nav>
@@ -110,7 +109,7 @@ const Hero = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -134,7 +133,7 @@ const Hero = () => {
               View Menu
             </a>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );
@@ -145,7 +144,7 @@ const About = () => {
     <section id="about" className="py-24 bg-brand-cream">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <motion.div 
+          <m.div 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -167,9 +166,9 @@ const About = () => {
                 referrerPolicy="no-referrer"
               />
             </div>
-          </motion.div>
+          </m.div>
 
-          <motion.div 
+          <m.div 
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -196,7 +195,7 @@ const About = () => {
                 <p className="text-sm font-bold uppercase tracking-widest text-zinc-400 mt-2">Creative Lab</p>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>
@@ -241,7 +240,7 @@ const Features = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((f, i) => (
-            <motion.div 
+            <m.div 
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -252,6 +251,7 @@ const Features = () => {
                 <img 
                   src={f.image} 
                   alt={f.title} 
+                  loading="lazy"
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
                 />
@@ -263,7 +263,7 @@ const Features = () => {
                   <p className="text-zinc-500 text-sm leading-relaxed">{f.desc}</p>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>
@@ -310,7 +310,7 @@ const Locations = () => {
         </div>
         <div className="grid md:grid-cols-3 gap-8">
           {branches.map((branch, i) => (
-            <motion.a 
+            <m.a 
               href={branch.mapUrl}
               target="_blank"
               rel="noopener noreferrer"
@@ -319,7 +319,7 @@ const Locations = () => {
               className="bg-brand-beige rounded-3xl overflow-hidden border border-zinc-200 group block hover:shadow-xl transition-shadow duration-300"
             >
               <div className="aspect-[4/3] overflow-hidden relative">
-                <img src={branch.image} alt={branch.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" referrerPolicy="no-referrer" />
+                <img src={branch.image} alt={branch.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" referrerPolicy="no-referrer" />
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-zinc-900">
                   {branch.city}
                 </div>
@@ -337,7 +337,7 @@ const Locations = () => {
                   {branch.address}
                 </div>
               </div>
-            </motion.a>
+            </m.a>
           ))}
         </div>
       </div>
@@ -371,7 +371,7 @@ const Gallery = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-4">
         {images.map((img, i) => (
-          <motion.div 
+          <m.div 
             key={i}
             whileHover={{ scale: 0.98 }}
             className="rounded-2xl overflow-hidden"
@@ -379,10 +379,11 @@ const Gallery = () => {
             <img 
               src={img} 
               alt={`Gallery ${i}`} 
+              loading="lazy"
               className="w-full h-full object-cover aspect-[4/5]"
               referrerPolicy="no-referrer"
             />
-          </motion.div>
+          </m.div>
         ))}
       </div>
     </section>
@@ -446,12 +447,12 @@ const MenuPreview = () => {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-4">
-              <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&q=80&w=400" alt="Food 1" className="rounded-2xl w-full aspect-square object-cover" referrerPolicy="no-referrer" />
-              <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&q=80&w=400" alt="Food 2" className="rounded-2xl w-full aspect-[3/4] object-cover" referrerPolicy="no-referrer" />
+              <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&q=80&w=400" alt="Food 1" loading="lazy" className="rounded-2xl w-full aspect-square object-cover" referrerPolicy="no-referrer" />
+              <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&q=80&w=400" alt="Food 2" loading="lazy" className="rounded-2xl w-full aspect-[3/4] object-cover" referrerPolicy="no-referrer" />
             </div>
             <div className="space-y-4 pt-8">
-              <img src="https://drive.google.com/thumbnail?id=1L8P1FqGZCZgDikENddXDKZPBEASsN1Sg&sz=w1000" alt="Food 3" className="rounded-2xl w-full aspect-[3/4] object-cover" referrerPolicy="no-referrer" />
-              <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=400" alt="Food 4" className="rounded-2xl w-full aspect-square object-cover" referrerPolicy="no-referrer" />
+              <img src="https://drive.google.com/thumbnail?id=1L8P1FqGZCZgDikENddXDKZPBEASsN1Sg&sz=w1000" alt="Food 3" loading="lazy" className="rounded-2xl w-full aspect-[3/4] object-cover" referrerPolicy="no-referrer" />
+              <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=400" alt="Food 4" loading="lazy" className="rounded-2xl w-full aspect-square object-cover" referrerPolicy="no-referrer" />
             </div>
           </div>
         </div>
@@ -504,8 +505,9 @@ const Reservation = () => {
 
           <form className="grid md:grid-cols-2 gap-6" onSubmit={handleReservation}>
             <div className="space-y-2 md:col-span-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-brand-beige/40">Select Branch</label>
+              <label htmlFor="branch" className="text-xs font-bold uppercase tracking-widest text-brand-beige/40">Select Branch</label>
               <select 
+                id="branch"
                 value={branch}
                 onChange={(e) => setBranch(e.target.value)}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-accent transition-colors appearance-none text-white"
@@ -517,8 +519,9 @@ const Reservation = () => {
             </div>
             
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-brand-beige/40">Full Name</label>
+              <label htmlFor="fullName" className="text-xs font-bold uppercase tracking-widest text-brand-beige/40">Full Name</label>
               <input 
+                id="fullName"
                 type="text" 
                 required
                 value={name}
@@ -528,8 +531,9 @@ const Reservation = () => {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-brand-beige/40">Date</label>
+              <label htmlFor="date" className="text-xs font-bold uppercase tracking-widest text-brand-beige/40">Date</label>
               <input 
+                id="date"
                 type="date" 
                 required
                 value={date}
@@ -538,8 +542,9 @@ const Reservation = () => {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-brand-beige/40">Time</label>
+              <label htmlFor="time" className="text-xs font-bold uppercase tracking-widest text-brand-beige/40">Time</label>
               <input 
+                id="time"
                 type="time" 
                 required
                 value={time}
@@ -548,8 +553,9 @@ const Reservation = () => {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-brand-beige/40">Area Preference</label>
+              <label htmlFor="smoking" className="text-xs font-bold uppercase tracking-widest text-brand-beige/40">Area Preference</label>
               <select 
+                id="smoking"
                 value={smoking}
                 onChange={(e) => setSmoking(e.target.value)}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-accent transition-colors appearance-none text-white"
@@ -559,8 +565,9 @@ const Reservation = () => {
               </select>
             </div>
             <div className="space-y-2 md:col-span-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-brand-beige/40">Guests</label>
+              <label htmlFor="guests" className="text-xs font-bold uppercase tracking-widest text-brand-beige/40">Guests</label>
               <select 
+                id="guests"
                 value={guests}
                 onChange={(e) => setGuests(e.target.value)}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-accent transition-colors appearance-none text-white"
@@ -596,7 +603,7 @@ const Community = () => {
           <div className="flex gap-4">
             <div className="flex -space-x-4">
               {[1,2,3,4].map(i => (
-                <img key={i} src={`https://i.pravatar.cc/150?u=${i}`} className="w-12 h-12 rounded-full border-4 border-brand-beige" alt="User" referrerPolicy="no-referrer" />
+                <img key={i} src={`https://i.pravatar.cc/150?u=${i}`} loading="lazy" className="w-12 h-12 rounded-full border-4 border-brand-beige" alt="User" referrerPolicy="no-referrer" />
               ))}
             </div>
             <div className="text-sm">
@@ -642,10 +649,10 @@ const Footer = () => {
               Premium social hub and creative workspace located in the heights of Gombel, Semarang.
             </p>
             <div className="flex gap-4">
-              <a href="https://www.instagram.com/ideologist.space/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-zinc-900 text-white flex items-center justify-center hover:bg-brand-accent transition-colors">
+              <a href="https://www.instagram.com/ideologist.space/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-10 h-10 rounded-full bg-zinc-900 text-white flex items-center justify-center hover:bg-brand-accent transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="https://www.tiktok.com/@ideologist.space" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-zinc-900 text-white flex items-center justify-center hover:bg-brand-accent transition-colors">
+              <a href="https://www.tiktok.com/@ideologist.space" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="w-10 h-10 rounded-full bg-zinc-900 text-white flex items-center justify-center hover:bg-brand-accent transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
                 </svg>
@@ -676,6 +683,7 @@ const Footer = () => {
         {/* Map Integration Placeholder */}
         <div className="w-full h-64 rounded-3xl overflow-hidden mb-12 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
           <iframe 
+            title="Google Maps Location"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.626210433615!2d110.420454!3d-7.030894!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e708c3866666667%3A0x6666666666666666!2sGombel%2C%20Semarang!5e0!3m2!1sen!2sid!4v1620000000000!5m2!1sen!2sid" 
             width="100%" 
             height="100%" 
@@ -702,19 +710,21 @@ const Footer = () => {
 
 export default function App() {
   return (
-    <div className="selection:bg-brand-accent selection:text-white">
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <Features />
-        <Locations />
-        <Gallery />
-        <MenuPreview />
-        <Reservation />
-        <Community />
-      </main>
-      <Footer />
-    </div>
+    <LazyMotion features={domAnimation}>
+      <div className="selection:bg-brand-accent selection:text-white">
+        <Navbar />
+        <main>
+          <Hero />
+          <About />
+          <Features />
+          <Locations />
+          <Gallery />
+          <MenuPreview />
+          <Reservation />
+          <Community />
+        </main>
+        <Footer />
+      </div>
+    </LazyMotion>
   );
 }
